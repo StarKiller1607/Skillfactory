@@ -92,18 +92,11 @@ for i in field:
 t.sleep(0.5)
 
 while True:
-    if move_count % 2 != 0:
-        player1_move = input(f'\nХод игрока {player1}: ')
-        while player1_move not in available_moves:
-            player1_move = input(f'Неверно указан ход, попробуйте ещё раз (доступные ходы - {available_moves}): ')
-        last_move = step(field, player1_move)
-        available_moves.remove(player1_move)
-    else:
-        player2_move = input(f'\nХод игрока {player2}: ')
-        while player2_move not in available_moves:
-            player2_move = input(f'Неверно указан ход, попробуйте ещё раз (доступные ходы - {available_moves}): ')
-        last_move = step(field, player2_move)
-        available_moves.remove(player2_move)
+    player_move = input(f'\nХод игрока {player1}: ') if move_count % 2 != 0 else input(f'\nХод игрока {player2}: ')
+    while player_move not in available_moves:
+        player_move = input(f'Неверно указан ход, попробуйте ещё раз (доступные ходы - {available_moves}): ')
+    last_move = step(field, player_move)
+    available_moves.remove(player_move)
 
     if move_count > 4:
         winner = win_check(last_move)
