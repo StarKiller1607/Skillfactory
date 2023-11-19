@@ -22,51 +22,49 @@ class Board:
             self.board_copy[k] = self.board[k].copy()
         for i in range(decks):
             try:
-                if self.board_copy[y][x] == '■' or self.board_copy[y][x] == '*':  #russian O
+                if self.board_copy[y][x] == '■' or self.board_copy[y][x] == '*':
                     return False
                 else:
                     self.board_copy[y][x] = '■'
                     try:
                         if not rotation:
                             if i == 0 and x != 0:
-                                self.board_copy[y][x-1] = '*'    #russian O
+                                self.board_copy[y][x-1] = '*'
                                 if y != 0:
-                                    self.board_copy[y-1][x-1] = '*'  #russian O
+                                    self.board_copy[y-1][x-1] = '*'
                             if y != 0:
-                                self.board_copy[y - 1][x] = '*'  # russian O
+                                self.board_copy[y - 1][x] = '*'
                             if i+1 == decks:
-                                self.board_copy[y][x+1] = '*'  # russian O
+                                self.board_copy[y][x+1] = '*'
                                 if y != 0:
-                                    self.board_copy[y-1][x+1] = '*'  # russian O
+                                    self.board_copy[y-1][x+1] = '*'
                         else:
                             if i == 0 and y != 0:
-                                self.board_copy[y-1][x] = '*'    #russian O
+                                self.board_copy[y-1][x] = '*'
                                 if x != 0:
-                                    self.board_copy[y-1][x-1] = '*'  #russian O
+                                    self.board_copy[y-1][x-1] = '*'
                             if x != 0:
-                                self.board_copy[y][x-1] = '*'  # russian O
+                                self.board_copy[y][x-1] = '*'
                             if i+1 == decks:
-                                self.board_copy[y+1][x] = '*'  # russian O
+                                self.board_copy[y+1][x] = '*'
                                 if x != 0:
-                                    self.board_copy[y+1][x-1] = '*'  # russian O
-                        #self.board[y-1][x] = '8' #russian O
+                                    self.board_copy[y+1][x-1] = '*'
                     except IndexError:
                         pass
 
                     try:
                         if not rotation:
                             if i == 0 and x != 0:
-                                self.board_copy[y + 1][x - 1] = '*'  # russian O
-                            self.board_copy[y + 1][x] = '*'  # russian O
+                                self.board_copy[y + 1][x - 1] = '*'
+                            self.board_copy[y + 1][x] = '*'
                             if i + 1 == decks:
-                                self.board_copy[y + 1][x + 1] = '*'  # russian O
+                                self.board_copy[y + 1][x + 1] = '*'
                         else:
                             if i == 0 and y != 0:
-                                self.board_copy[y - 1][x + 1] = '*'  # russian O
-                            self.board_copy[y][x+1] = '*'  # russian O
+                                self.board_copy[y - 1][x + 1] = '*'
+                            self.board_copy[y][x+1] = '*'
                             if i + 1 == decks:
-                                self.board_copy[y + 1][x + 1] = '*'  # russian O
-                        #self.board[y + 1][x] = '8'  # russian O
+                                self.board_copy[y + 1][x + 1] = '*'
                     except IndexError:
                         pass
 
