@@ -172,12 +172,6 @@ class AIShip(Ship):
         self.rotation = rotation
 
 
-class Player:
-    def __init__(self):
-        self.board = Board()
-
-
-
 class Game:
 
     @staticmethod
@@ -205,6 +199,27 @@ class Game:
                 break
 
     @staticmethod
+    def player_ship_placement():
+        print('Игрок расставляет корабли . . .')
+        for i in range(7):
+            if i == 0:
+                new_ship = Ship(decks=3)
+            elif 0 < i < 3:
+                new_ship = Ship(decks=2)
+            else:
+                new_ship = Ship(decks=1)
+            while not player_board.place_ship(new_ship.get_decks(), new_ship.get_x(), new_ship.get_y(),
+                                              new_ship.get_rotation()):
+                print('\nНеверное расположение корабля, попробуйте ещё раз:')
+                if i == 0:
+                    new_ship = Ship(decks=3)
+                elif 0 < i < 3:
+                    new_ship = Ship(decks=2)
+                else:
+                    new_ship = Ship(decks=1)
+            player_board.print_board()
+
+    @staticmethod
     def round():
         print('-'*50)
         print('> ХОД ИГРОКА <')
@@ -213,124 +228,65 @@ class Game:
         while not ai_board.shot(int(input('Координата по горизонтали > ')), int(input('Координата по вертикали > '))):
             print('По указанным координатам уже был произведён выстрел, либо указаны координаты за пределами поля\n')
             print('Попробуйте ещё раз:\n')
+        print('\nВы сделали выстрел:')
         ai_board.print_board()
+        if ai_board.win():
+            print('ПОБЕДИЛ ИГРОК!')
+            return True
+        else:
+            input('\nЧтобы продолжить, нажмите Enter')
 
-        print('\n> ХОД ИИ <')
-        print('ИИ сделал выстрел по вашей доске:')
+        print('-'*50)
+        print('> ХОД ИИ <')
+        print('\nИИ сделал выстрел по вашей доске:')
         while not player_board.shot(r.randint(0, 5), r.randint(0, 5)):
             pass
         player_board.print_board()
+        if player_board.win():
+            print('ПОБЕДИЛ ИИ!')
+            return True
+        else:
+            input('\nЧтобы продолжить, нажмите Enter')
+
+        return False
 
 
     @staticmethod
-    def greet():
+    def rules():
         print('Добро пожаловать в игру Морской Бой!');t.sleep(1)
-        print('Игра проходит между ИИ и игроком')
+        if input('Пропустить правила? (Y/N)') in 'Yy':
+            return False
+        print('\nВо время показа правил, не нажимайте Enter, сообщения сами выводятся с удобными для чтения промежутками!');t.sleep(4)
+        print('\nИгра проходит между ИИ и игроком');t.sleep(3)
+        print('''При расстановке кораблей вам будет предложено указать координату по горизонтали, координату по вертикали\nи необходимость повернуть корабль в вертикальную плоскость''');t.sleep(5)
+        print('Для правильной установки кораблей следуйте следующим правилам:');t.sleep(3)
+        print('1. При указании координат, вы указываете координату носа корабля');t.sleep(5)
+        print('2. Если отказаться от поворота корабля по вертикали, то он будет установлен слева-направо, начиная с указанной координаты');t.sleep(5)
+        print('3. Если согласиться повернуть корабль по вертикали, то он будет установлен сверху-вниз, начиная с указанной координаты');t.sleep(5)
+        print('4. Корабли не могут располагаться вплотную друг к другу, в том числе и по диагонали');t.sleep(5)
+        print('Для удобства, на доске игрока зоны вокруг кораблей, куда нельзя ставить другие корабли, будут обведены знаком *');t.sleep(5)
+        print('\nИгровое поле выглядит следующим образом:');t.sleep(1)
+        tutorial_board.print_board();t.sleep(5)
+        print('Например, ставим 3-палубный корабль на координату 2 по горизонтали, 0 по вертикали и поворачиваем корабль по вертикали');t.sleep(5)
+        print('Такой корабль установится на доску следующим образом:');t.sleep(3)
+        tutorial_board.place_ship(3, 2, 0, True)
+        tutorial_board.print_board();t.sleep(5)
+        print('Для выстрела вам будет предложено так же выбрать координату по горизонтали и по вертикали');t.sleep(4)
+        print('Попадание обозначается знаком Х, промах знаком Т');t.sleep(3)
+        print('Например, были произведены два выстрела, один по координатам 2, 1; другой по координатам 3, 1:');t.sleep(4)
+        tutorial_board.shot(2, 1); tutorial_board.shot(3, 1)
+        tutorial_board.print_board();t.sleep(5)
+        print('Игрок и ИИ ходят поочерёдно, кто первый уничтожит вражеские корабли - тот победил');t.sleep(2)
+        input('Чтобы начать игру, нажмите Enter')
+        print('\nНачало игры!\n')
 
 
-
-
+tutorial_board = Board()
+Game().rules()
 ai_board = AIBoard()
-Game().generate_board()
-
-
 player_board = Board()
-print('Игрок расставляет корабли . . .')
-for i in range(7):
-    if i == 0:
-        new_ship = Ship(decks=3)
-    elif 0 < i < 3:
-        new_ship = Ship(decks=2)
-    else:
-        new_ship = Ship(decks=1)
-    while not player_board.place_ship(new_ship.get_decks(), new_ship.get_x(), new_ship.get_y(), new_ship.get_rotation()):
-        print('\nНеверное расположение корабля, попробуйте ещё раз:')
-        if i == 0:
-            new_ship = Ship(decks=3)
-        elif 0 < i < 3:
-            new_ship = Ship(decks=2)
-        else:
-            new_ship = Ship(decks=1)
-    player_board.print_board()
+Game().generate_board()
+Game().player_ship_placement()
 
-while True:
-    Game.round()
-    if player_board.win():
-        print('ПОБЕДИЛ ИИ!')
-        break
-    if ai_board.win():
-        print('ПОБЕДИЛ ИГРОК!')
-        break
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-'''while not player_board.win():
-    player_board.shot(int(input('x > ')), int(input('y > ')))
-    player_board.print_board()
-if player_board.win():
-    print('win')'''
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-'''player_board = Board()
-ai_board = Board() # ai_board должен быть объектом класса AIBoard(), а щас он объект Board() для наглядности в консоли!!!
-
-
-if not player_board.place_ship(3, 2, 2, False):
-    print('b')
-
-if not player_board.place_ship(3, 5, 0, False):
-    print('a')
-
-if not ai_board.place_ship(3, 1, 1, True):
-    print('c')
-
-player_board.shot(3, 2)
-ai_board.shot(2, 1)
-
-player_board.print_board()
-ai_board.print_board()'''
-
-
-
+while not Game().round():
+    pass
